@@ -7,25 +7,30 @@
     window.onload = async function () {
       const params = new URLSearchParams(window.location.search);
       const dealId = params.get("deal_id");
+      const statut = params.get("statut"); // 👈 Nouveau paramètre optionnel
 
       if (!dealId) {
         document.body.innerHTML = "❌ Paramètre 'deal_id' manquant.";
         return;
       }
 
+      // Construction dynamique du body selon la présence de "statut"
+      const body = { deal_id: dealId };
+      if (statut !== null) {
+        body.statut = statut;
+      }
+
       try {
         await fetch("https://hook.eu2.make.com/n4be46q2qum7f0tjitsdla5b0fz0u24t", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ deal_id: dealId })
+          body: JSON.stringify(body)
         });
 
-        // Tente de fermer la page
         window.close();
 
-        // Si fermeture échoue, redirige vers une page "fermeture manuelle"
         setTimeout(() => {
-          window.location.href = "about:blank"; // ou une vraie page style "c'est fait !"
+          window.location.href = "about:blank";
         }, 100);
 
       } catch (err) {
