@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Chargement en cours...</title>
+  <title>Validation en cours...</title>
   <script>
     window.onload = async function () {
       const params = new URLSearchParams(window.location.search);
@@ -19,8 +19,15 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ deal_id: dealId })
         });
-        // Tente de fermer l'onglet
+
+        // Tente de fermer la page
         window.close();
+
+        // Si fermeture échoue, redirige vers une page "fermeture manuelle"
+        setTimeout(() => {
+          window.location.href = "about:blank"; // ou une vraie page style "c'est fait !"
+        }, 100);
+
       } catch (err) {
         console.error(err);
         document.body.innerHTML = "❌ Erreur lors de l’envoi.";
